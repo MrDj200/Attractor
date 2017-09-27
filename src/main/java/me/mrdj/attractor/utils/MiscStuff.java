@@ -1,5 +1,6 @@
 package me.mrdj.attractor.utils;
 
+import me.mrdj.attractor.tiles.TileAttractor;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -10,14 +11,23 @@ import net.minecraft.util.math.Vec3d;
  */
 public class MiscStuff
 {
-    public static void setEntityMotionToBlock(Entity entity, BlockPos originBlock, float modifier)
+    private static BlockPos originBlock = null;
+    private static Vec3d blockVector = null;
+    
+    public static void setEntityMotionToBlock(Entity entity, TileAttractor originTile, float modifier)
     {
-        Vec3d blockVector = new Vec3d(originBlock.getX(), originBlock.getY(), originBlock.getZ());
+        originBlock = originTile.getPos();
+        blockVector = new Vec3d(originBlock.getX(), originBlock.getY(), originBlock.getZ());
         
         Vec3d entityVector = entity.getPositionVector();
         Vec3d finalVector = blockVector.subtract(entityVector);
         
         finalVector.normalize();             
+        
+        if(originTile.getIsInverted())
+        {
+            modifier = modifier * (-1);
+        }
 
         entity.motionX = finalVector.x * modifier;
         entity.motionY = finalVector.y * modifier;

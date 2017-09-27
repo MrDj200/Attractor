@@ -44,7 +44,7 @@ public class TOPCompatibility
                 @Override
                 public String getID()
                 {
-                    return "modtut:default";
+                    return "djsattractor:default";
                 }
 
                 @Override

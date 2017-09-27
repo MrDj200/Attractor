@@ -18,15 +18,25 @@ public class TileAttractor extends TileEntity implements ITickable
     private int counter = 0;
     private int curRange = Config.totalMaxAttractorRadius;
     private int maxHigh, maxLow;
-           
+    private boolean isActive = true;
+    private boolean isInverted = false;    
+          
+    private AxisAlignedBB myAABB = null;   
+    
     @Override
     public void update() 
     {   
-        if(counter == 10)
+        if(!isActive)
+        {
+            return;
+        }
+        if(counter == 5)
         {
             maxHigh = curRange;
             maxLow = curRange * (- 1);
-            List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().add(maxLow, maxLow, maxLow), getPos().add(maxHigh, maxHigh, maxHigh)));
+            
+            myAABB = new AxisAlignedBB(getPos().add(maxLow, maxLow, maxLow), getPos().add(maxHigh, maxHigh, maxHigh));
+            List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, myAABB);
             counter = 0;
             if(list.isEmpty())
             {
@@ -58,7 +68,24 @@ public class TileAttractor extends TileEntity implements ITickable
             //  Cancel the action when its a player
         }
         
-        MiscStuff.setEntityMotionToBlock(entity, this.getPos(), 0.25F);
+        MiscStuff.setEntityMotionToBlock(entity, this, 0.25F);
     }
+
+    public boolean getIsActive() 
+    {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) 
+    {
+        this.isActive = isActive;
+    }    
     
+    public boolean getIsInverted() {
+        return isInverted;
+    }
+
+    public void setIsInverted(boolean isInverted) {
+        this.isInverted = isInverted;
+    }
 }
