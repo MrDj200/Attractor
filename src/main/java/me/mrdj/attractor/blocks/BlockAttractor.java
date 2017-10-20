@@ -47,13 +47,19 @@ public class BlockAttractor extends BlockBaseDj implements ITileEntityProvider, 
         this.setHardness(10);
         this.setCreativeTab(CreativeTabs.MISC);
         this.setLightOpacity(0);
+        if(!Config.canBeMobGriefed)
+        {
+            this.setHardness((float) 50.000);
+        }
     }
+    
+    
     
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return side == EnumFacing.DOWN;
-    }    
-    
+    }  
+            
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
@@ -147,8 +153,7 @@ public class BlockAttractor extends BlockBaseDj implements ITileEntityProvider, 
             probeInfo.horizontal()
                     .text("Active: " + attractorTile.getIsActive());
             probeInfo.horizontal()
-                    .text("Inverted: " + attractorTile.getIsInverted());
-                    
+                    .text("Inverted: " + attractorTile.getIsInverted());                    
         }
     }
     
